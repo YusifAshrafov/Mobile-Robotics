@@ -22,10 +22,22 @@ Lab-03/
 │       ├── pid_testA.py
 │       ├── pid_testB.py
 │       └── pid_testC.py
-└── data/
-    ├── kp/       # Five proportional-gain CSV logs
-    └── tests/    # Nine P, PD and PID comparison CSV logs
+├── data/
+│   ├── kp/       # Five proportional-gain CSV logs
+│   └── tests/    # Nine P, PD and PID comparison CSV logs
+└── graphs/
+    ├── Task3_TestA.png
+    ├── Task3_TestA_near_target.png
+    ├── Task3_TestB.png
+    ├── Task3_TestC.png
+    ├── kp_comparison.png
+    ├── kp_comparison1.png
+    ├── kp_comparison2.png
+    ├── kp_comparison3.png
+    └── t.txt
 ```
+
+The `graphs/` folder contains eight saved figures. `t.txt` is a blank text placeholder, not an experiment record.
 
 ## Programs
 
@@ -132,7 +144,7 @@ In these runs, KP = 6 produced the smallest whole-log mean absolute error. KP = 
 
 ## Recorded controller-comparison results
 
-The table summarizes the nine CSV files in `data/tests/`. Each linked row corresponds to one recorded trial.
+The table summarizes the nine CSV files in `data/tests/`. Each linked row corresponds to one recorded trial. The P row for Test B describes the single archived `P_TestB_KP6` CSV; it does not average the two P repeats shown in the saved Test B graph.
 
 | Test | Controller and source log | Distance range (mm) | Final distance (mm) | Mean absolute error (mm) |
 | --- | --- | --- | ---: | ---: |
@@ -152,4 +164,25 @@ mean_absolute_error_mm = sum(abs(distance_mm - 200)) / number_of_samples
 
 These are sample-averaged, whole-log errors, not time-weighted errors or errors restricted to a particular stopping event. In the available runs, P has the lowest mean absolute error in Tests A and C, while PID has the lowest in Test B. No controller has the lowest error in every test.
 
-Manual movement differed between trials, and exact start, reversal, and stop times are not recorded in the CSV files. Consequently, a lower whole-log error in Test C does not by itself establish the best sudden-stop response. Ultrasonic fluctuations, different initial distances, and speed saturation also affect the comparison. Graphs and plotting scripts are not currently included in this folder.
+Manual movement differed between trials, and exact start, reversal, and stop times are not recorded in the CSV files. Consequently, a lower whole-log error in Test C does not by itself establish the best sudden-stop response. Ultrasonic fluctuations, different initial distances, and speed saturation also affect the comparison.
+
+## Graphs
+
+| File | Description | Related records |
+| --- | --- | --- |
+| [kp_comparison.png](graphs/kp_comparison.png) | Combined proportional-gain figure showing the full approach, near-target response, and speed-command saturation for KP = 1, 2, 4, 6 and 8. | Five gain-test CSV files in `data/kp/`. |
+| [kp_comparison1.png](graphs/kp_comparison1.png) | Separate export of panel A: full approach to the 200 mm target. | Gain-test records. |
+| [kp_comparison2.png](graphs/kp_comparison2.png) | Separate export of panel B: near-target overshoot and oscillation, with a 195–205 mm reference band. | Gain-test records. |
+| [kp_comparison3.png](graphs/kp_comparison3.png) | Separate export of panel C: commanded linear speed and ±300 mm/s limits. | Gain-test records. |
+| [Task3_TestA.png](graphs/Task3_TestA.png) | P, PD and PID distance responses and speed commands during stationary-target approach. | Three Test A CSV files in `data/tests/`. |
+| [Task3_TestA_near_target.png](graphs/Task3_TestA_near_target.png) | Test A comparison with the distance axis zoomed near the target. | Same three Test A records. |
+| [Task3_TestB.png](graphs/Task3_TestB.png) | Following experiment with two labelled P repeats, PD and PID responses, and their speed commands. Movement times are unmarked. | Archived P, PD and PID Test B records; the additional P repeat is not separately archived. |
+| [Task3_TestC.png](graphs/Task3_TestC.png) | Sudden-stop experiment with distance responses and speed commands for P, PD and PID. The target stop time is unmarked. | Three Test C CSV files in `data/tests/`. |
+
+The gain-comparison figure uses time since the first recorded sample. The Test A, B and C figures label their horizontal axes as logged elapsed time. A 195–205 mm band is used in the near-target gain comparison, while the controller-comparison figures show a 190–210 mm band. These are visual reference bands, not changes to the controllers' 200 mm setpoint.
+
+In the gain trials, larger gains approach the target faster near the end of the initial movement, but KP = 8 also shows a larger excursion below 200 mm. The command panel shows the initial positive saturation and subsequent corrections, including reverse commands. In Test A, all three saved controller records finish close to the target. Tests B and C include corrections in both directions, with larger temporary deviations during manual target movement.
+
+`Task3_TestB.png` labels two curves as **P repeat 1** and **P repeat 2**, whereas the repository contains only one P Test B CSV. The additional repeat cannot be independently traced to a separate archived input file. The result table therefore uses only the linked CSV, whose recorded distance range is 174–243 mm. Keep the missing repeat log with the figure if it becomes available.
+
+The plotting scripts are not currently included in this folder, so the exact figure-generation settings cannot be rerun from the repository alone. The archived CSV files remain the source for the numerical tables above. Exact event-specific response times for Tests B and C also require recorded movement and stopping times; the graph labels do not supply those events.
