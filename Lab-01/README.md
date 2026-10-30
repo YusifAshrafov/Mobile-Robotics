@@ -79,13 +79,3 @@ closing_error_mm = 10 × sqrt(x_final_cm² + y_final_cm²)
 These values are calculated from the rounded positions visible in the screenshots. They describe the odometry estimate; independent floor measurements are needed to establish the robot's actual closing error. The screenshots alone do not establish an improvement over the baseline program.
 
 The screenshots show an execution filename of `new_square.py`, while the feedback program in this repository is named `square_new.py`. The exact historical source versions for the screenshot trials have not been separately archived. In particular, the current programs are set to negative-angle turns, while the screenshots include both angle signs.
-
-## Supporting evidence to add
-
-- Robot and floor-marker photographs showing the experimental setup.
-- Physical corner positions or final-position measurements, with units and trial labels.
-- An unedited demonstration video link identifying the experiments shown.
-- The final report, if it is intended to be stored with the repository submission.
-- Exact program versions or a trial-settings record connecting each screenshot to its experiment.
-
-If the report also discusses standalone forward motion, reverse motion, or a 300-degree rotation experiment, include the corresponding programs and evidence. Those standalone experiments are not represented by separate files in the current folder.
