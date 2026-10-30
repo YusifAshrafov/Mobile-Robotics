@@ -3,4 +3,4 @@
 Laboratory assignment for the Mobile Robotics course.
 
 This folder contains the source code,
-experiment results, and supporting images.
+experiment results, and supporting images.+
