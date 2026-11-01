@@ -10,15 +10,26 @@ Lab-05/
 ├── codes/
 │   ├── main.py
 │   └── chart.py
+├── data/
+│   ├── explore.csv
+│   ├── explore_earlier.csv
+│   ├── nodes.csv
+│   └── edges.csv
 └── graphs/
     ├── explore_signals.png
     ├── map.png
     ├── path.png
-    ├── raw_map.png
-    └── t.txt
+    └── raw_map.png
 ```
 
-The figures are included as saved experiment outputs. The original exploration CSV, generated node and edge tables, and route instructions are not currently included. `t.txt` is a blank text placeholder rather than an experimental record.
+The figures are included as saved experiment outputs, alongside the following archived data files. Route instructions are not currently included.
+
+| File | Description |
+| --- | --- |
+| [explore.csv](data/explore.csv) | Final two-lap exploration log, including raw motor encoder angles. |
+| [explore_earlier.csv](data/explore_earlier.csv) | Earlier exploration log supporting the 110.1 cm first-lap endpoint mismatch. |
+| [nodes.csv](data/nodes.csv) | Generated table containing seven algorithm-labelled nodes. |
+| [edges.csv](data/edges.csv) | Generated table containing eight undirected edges and their measured lengths. |
 
 ## Programs
 
@@ -100,31 +111,31 @@ Use computer-side Python with NumPy and Matplotlib installed:
 python -m pip install numpy matplotlib
 ```
 
-Place a retrieved exploration log named `explore.csv` in the `Lab-05` directory, alongside `codes/` and `graphs/`, then run the following command from that directory:
+From the `Lab-05` directory, run the mapping program with the archived final exploration log:
 
 ```bash
-python codes/chart.py explore.csv
+python codes/chart.py data/explore.csv
 ```
 
-The input CSV must be supplied first; it is not currently stored in the repository. If its name contains spaces or parentheses, quote the filename when passing it to the program.
+For a new experiment, retrieve its exploration CSV from the EV3 and supply that file's path instead. If its name contains spaces or parentheses, quote the filename when passing it to the program.
 
 The default heading source is the logged gyro heading. To use wheel-derived heading or request optional heading drift correction:
 
 ```bash
-python codes/chart.py explore.csv --heading wheels
-python codes/chart.py explore.csv --heading gyro --fix-drift
+python codes/chart.py data/explore.csv --heading wheels
+python codes/chart.py data/explore.csv --heading gyro --fix-drift
 ```
 
 For optional manual node positions, provide a text file with `name,x,y` columns in the coordinate frame of the displayed map:
 
 ```bash
-python codes/chart.py explore.csv --nodes labelled_nodes.csv
+python codes/chart.py data/explore.csv --nodes labelled_nodes.csv
 ```
 
 After inspecting the generated node table and checking the graph against the maze layout, a route can be planned between connected nodes. Replace `START_NODE` and `GOAL_NODE` with actual identifiers:
 
 ```bash
-python codes/chart.py explore.csv --start START_NODE --goal GOAL_NODE
+python codes/chart.py data/explore.csv --start START_NODE --goal GOAL_NODE
 ```
 
 The program uses mean measured edge lengths as graph weights. Route instructions select a tape side and use a matching-side encoder distance when available, with geometric edge length as a fallback. These instructions are a plan; the supplied EV3 exploration program does not execute `route.txt` as a shortest-route driving test.
@@ -143,6 +154,8 @@ The program uses mean measured edge lengths as graph weights. Route instructions
 | `left_deg`, `right_deg` | Raw motor encoder angles | degrees |
 
 The compact logging arrays store distance and position values as integer millimeters, which are converted back to centimeters when writing the CSV. The signed encoder travel is distinct from the geometric length of the reconstructed sensor path.
+
+The earlier `explore_earlier.csv` contains the first eight columns above, without `left_deg` and `right_deg`. Its logged heading and positions support endpoint comparisons, but it cannot supply wheel-derived heading through `--heading wheels`.
 
 ## Generated mapping files
 
@@ -165,11 +178,17 @@ The legend in the saved [map.png](graphs/map.png) reports the following endpoint
 | 1 | Left | 3.8 |
 | 2 | Right | 8.4 |
 
+The archived final log reproduces these rounded endpoint mismatches using only following-mode samples (`mode = 0`) from each lap. The same calculation on [explore_earlier.csv](data/explore_earlier.csv) gives a first-lap mismatch of 110.1 cm, compared with 3.8 cm in the final log:
+
+```text
+endpoint_mismatch_cm = sqrt((x_last_cm - x_first_cm)² + (y_last_cm - y_first_cm)²)
+```
+
 In the mapping code, this value is the estimated endpoint offset measured before applying the per-lap position-closure adjustment. Any selected heading processing can already have affected the coordinates. It is not an independently measured physical closing error or a remaining error after all map corrections.
 
 The displayed reconstruction labels one junction, J1, and six endpoints, E1–E6. These are algorithm-generated nodes rather than verified identities from the reference maze. Their number and placement should be checked against [path.png](graphs/path.png) before using the graph for navigation. The supplied figures do not establish a successful physical shortest-path run.
 
-The source exploration CSV and exact command options used to generate the saved figures are not currently archived in this folder, so the numerical results cannot yet be independently regenerated from the repository alone.
+The final exploration CSV and generated node and edge tables are archived in `data/`. The current numeric mapping pipeline, using the final log with default gyro heading and no optional heading drift correction, reproduces the archived node coordinates and mean edge lengths at their stored precision. The exact historical commands used to export the saved figures were not separately recorded.
 
 ## Graphs and reference layout
 
@@ -180,4 +199,4 @@ The source exploration CSV and exact command options used to generate the saved 
 | [raw_map.png](graphs/raw_map.png) | Raw exploration trajectories with start/end markers and crossing/turning samples. |
 | [path.png](graphs/path.png) | Reference maze layout with labelled locations and the marked starting position. |
 
-The raw and reconstructed figures illustrate differences in path alignment and mapping output. Without their corresponding logs and processing settings, they should not be treated as a controlled numerical comparison of two robot configurations.
+The raw and reconstructed figures illustrate differences in path alignment and mapping output. The two exploration logs support the endpoint comparison above, but the earlier trial's exact source settings and the raw-map generation procedure are not archived. These records do not isolate the effect of any single controller change or establish a controlled comparison of physical accuracy.
