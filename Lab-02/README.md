@@ -9,6 +9,7 @@ Lab-02/
 ├── README.md
 ├── codes/
 │   ├── main.py
+│   ├── calibration.py
 │   └── edge_scan.py
 ├── data/
 │   ├── 10mmTest_1.png
@@ -26,6 +27,7 @@ Lab-02/
 | File | Description |
 | --- | --- |
 | [main.py](codes/main.py) | Follows the tape edge using a right-mounted color sensor, proportional steering, and locked left/right turning states. Includes a manual stop and elapsed-time output. |
+| [calibration.py](codes/calibration.py) | Takes ten reflection readings on the floor and ten on black tape, prints each surface average, and calculates their midpoint target. Recreated from the recorded calibration screenshots. |
 | [edge_scan.py](codes/edge_scan.py) | Guides manual sensor positioning, takes ten reflection readings at each position, and prints the readings, averages, and a final comma-separated summary. |
 
 In normal following, the controller calculates `error = reflection - TARGET` and `correction = error × 7`. It subtracts the correction from the left motor speed and adds it to the right motor speed. Normal-state speeds are limited to 80–320 degrees/s.
@@ -66,6 +68,8 @@ Motor speed values are wheel/motor rotation rates, not the robot's linear speed.
 4. Keep the sensor position and height consistent between calibration, scanning, and line-following trials.
 5. Save the terminal output and record the settings used for each experiment.
 
+For `calibration.py`, place the sensor over the floor before launching the program. It waits 3 seconds, takes ten readings with a 100 ms wait after each reading, and prints the floor average. Move the sensor to black tape during the following 5-second pause. The program then gives another 3-second preparation pause before taking ten black-tape readings. It prints both averages and `TARGET = (FLOOR + BLACK) / 2`. Copy the terminal results if a record is needed; the program does not save a file or update `main.py` automatically.
+
 For `main.py`, place the sensor on the tape edge and press **CENTER**. Release the button to begin the run. Press **DOWN** to stop the robot. The program brakes both motors, beeps, and prints the elapsed time in seconds. Stopping is manual; the program does not automatically detect completion of a lap. Its printed time includes the stopping and final-beep overhead, so record the timing method when comparing runs.
 
 For `edge_scan.py`, move the sensor manually to each position shown on the EV3 screen. Press **CENTER**, then release the button to take ten readings after a 500 ms pause. Press **DOWN** while waiting at a position to end the scan and print the results collected so far. The program does not move the sensor automatically or save a CSV file; copy the final `position_mm,reflection` rows from the terminal if a data file is needed.
@@ -80,7 +84,7 @@ The calibration screenshots contain the following reported averages and midpoint
 | [Calibration 2](data/calibration2.png) | 40.0 | 4.1 | 22.05 |
 | [Calibration 3](data/calibration3.png) | 42.7 | 7.5 | 25.1 |
 
-These values describe the recorded calibration sessions. They differ from the fixed reference values in the current controller and should not be treated as settings that the program loads automatically. The separate program that produced these calibration screenshots is not included in `codes/`.
+These values describe the recorded calibration sessions. They differ from the fixed reference values in the current controller and should not be treated as settings that the program loads automatically. The included `calibration.py` was recreated from these screenshots; the exact historical source remains unavailable. Its 100 ms sample interval is a chosen setting, not a timing value confirmed by the screenshots.
 
 [10mmTest_1.png](data/10mmTest_1.png) shows individual readings and averages for a scan from -10 to +10 mm in 2 mm steps. [10mmTest_2.png](data/10mmTest_2.png) shows the matching final summary. For example, the recorded mean reflection increases from 14.3% at 0 mm to 42.0% at 2 mm. These two images document the same set of scan values rather than two independent repetitions.
 
