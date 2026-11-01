@@ -10,6 +10,11 @@ Lab-04/
 ├── codes/
 │   ├── main.py
 │   └── main_new.py
+├── data/
+│   ├── terminal1.txt
+│   ├── terminal2.txt
+│   ├── terminal3.txt
+│   └── terminal4.txt
 └── graphs/
     ├── Graph1.png
     └── Graph2.png
@@ -98,6 +103,17 @@ The original version periodically prints elapsed seconds, the selected behavior,
 
 At the end, the upgraded version prints elapsed time and counts for tape-triggered escapes, early avoidance, and critical avoidance. These are controller events, not direct measurements of boundary crossings or collisions. Neither program automatically calculates a competition score or saves a CSV file.
 
+Four terminal records are archived in `data/`:
+
+| File | Recorded output |
+| --- | --- |
+| [terminal1.txt](data/terminal1.txt) | Original-style status output with elapsed time, selected behavior, reflection, and ultrasonic distance. |
+| [terminal2.txt](data/terminal2.txt) | Upgraded-style status and event output, including early avoidance at 321 mm at 15 seconds. |
+| [terminal3.txt](data/terminal3.txt) | Upgraded-style status and event output, including critical avoidance at 156 mm at 42 seconds. |
+| [terminal4.txt](data/terminal4.txt) | Upgraded-style status and event output, including critical avoidance at 84 mm at 54 seconds. |
+
+All four records end with a stop-button message and contain entries beyond 120 seconds. They do not identify their corresponding scored run numbers or the exact 120-second scoring windows. The launch filenames are `shorter_main.py` in the first record and `main.py` in the other three; these names alone do not establish the exact historical source versions.
+
 ## Recorded arena results
 
 [Graph1.png](graphs/Graph1.png) compares five trials labelled Old R4, Old R5, New R6, New R7, and New R8. The following scores are read from the plotted bars:
@@ -117,18 +133,18 @@ original_mean = (70 + 70) / 2 = 70 points
 upgraded_mean = (100 + 80 + 90) / 3 = 90 points
 ```
 
-These values summarize the graph; the raw scoring table, scoring rules, terminal logs, and videos are not currently included in this folder. The graph alone does not establish how each score was reconstructed or independently verify individual boundary crossings and contacts. Only two original and three upgraded trials are represented, and changes to both sensor mounting and software prevent isolating the contribution of either change.
+These values summarize the graph. Terminal logs are included, but the raw scoring table, scoring rules, and videos are not currently included in this folder. The logs have not been linked to the individual scored runs, so they do not independently reconstruct each score or verify boundary crossings and contacts. Only two original and three upgraded trials are represented, and changes to both sensor mounting and software prevent isolating the contribution of either change.
 
 ## Ultrasonic detection records
 
 [Graph2.png](graphs/Graph2.png) shows upgraded detection zones and selected readings labelled as events from terminal logs:
 
-| Distance | Configuration represented | Interpretation |
-| --- | --- | --- |
-| 84 mm | Upgraded | Inside the critical-distance zone. |
-| 156 mm | Upgraded | Inside the critical-distance zone. |
-| 217 mm | Original | Below the original 250 mm avoidance threshold. |
-| 321 mm | Upgraded | Inside the early-avoidance zone. |
+| Distance | Configuration represented | Interpretation | Source record and logged time |
+| --- | --- | --- | --- |
+| 84 mm | Upgraded | Inside the critical-distance zone. | [terminal4.txt](data/terminal4.txt), 54 seconds, `CRITICAL`. |
+| 156 mm | Upgraded | Inside the critical-distance zone. | [terminal3.txt](data/terminal3.txt), 42 seconds, `CRITICAL`. |
+| 217 mm | Original | Below the original 250 mm avoidance threshold. | [terminal1.txt](data/terminal1.txt), 18 seconds, `winner: avoid`. |
+| 321 mm | Upgraded | Inside the early-avoidance zone. | [terminal2.txt](data/terminal2.txt), 15 seconds, `EARLY`. |
 
 In the upgraded code, distances below 160 mm are critical; distances from 160 mm up to, but not including, 400 mm are in the early zone. A distance of 400 mm or more is outside the obstacle-detection threshold, although an already active turn can continue until its angle target is reached. Confirmation readings are still required before a new avoidance activation.
 
@@ -141,4 +157,4 @@ The 475 mm value is the graph's display limit, not the sensor's maximum range. T
 | [Graph1.png](graphs/Graph1.png) | Competition scores across the five original/upgraded trials shown. |
 | [Graph2.png](graphs/Graph2.png) | Ultrasonic detection zones and selected avoidance readings. |
 
-The plotting scripts and original numeric source records are not currently included in this folder. Preserve those records alongside any future regenerated figures so that the results can be traced to their experimental evidence.
+The plotting scripts and raw scoring table are not currently included in this folder. The selected ultrasonic readings can be traced to the terminal records linked above. Preserve the input records and plotting settings alongside any future regenerated figures.
