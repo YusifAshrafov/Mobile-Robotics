@@ -68,15 +68,15 @@ cd Mobile-Robotics
 
 The EV3 programs use hardware-specific Pybricks imports. The computer-side mapping program in Lab 05 uses standard Python with NumPy and Matplotlib.
 
-After retrieving an exploration CSV from the EV3, the basic Lab 05 mapping workflow is:
+Using the archived final exploration CSV, the basic Lab 05 mapping workflow is:
 
 ```bash
 python -m pip install numpy matplotlib
 cd Lab-05
-python codes/chart.py explore.csv
+python codes/chart.py data/explore.csv
 ```
 
-Place the input `explore.csv` in `Lab-05` before running the command. See the Lab 05 README for heading selection, optional drift correction, manual nodes, and route-planning options.
+The input is included at `Lab-05/data/explore.csv`. For a new experiment, retrieve its CSV from the EV3 and supply that file's path instead. See the Lab 05 README for heading selection, optional drift correction, manual nodes, and route-planning options.
 
 ## Selected recorded results
 
@@ -92,7 +92,7 @@ These results describe the archived records and figures. Estimated positions are
 
 ## Reproducing the experiments
 
-Lab 03 includes the CSV inputs used for its numerical result tables. Labs 01 and 02 include terminal measurement screenshots, while Labs 02–05 include saved figures. Some figure-generation scripts and original trial records are not yet archived. In particular, Lab 05 requires the original exploration CSV to regenerate its maps.
+Lab 03 includes the CSV inputs used for its numerical result tables. Labs 01 and 02 include terminal measurement screenshots, while Labs 02–05 include saved figures. Lab 04 includes four terminal logs. Lab 05 includes the final and earlier exploration logs, generated node and edge tables, and the mapping script. Some figure-generation scripts and original trial records are not yet archived, including the separate procedure used to generate Lab 05's raw-map figure.
 
 The Lab 03 README documents an existing startup issue in the saved PID Test B program. The Lab 04 README distinguishes the original and upgraded programs' different run durations. Review these details before repeating those experiments.
 
