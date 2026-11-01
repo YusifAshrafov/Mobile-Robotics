@@ -33,11 +33,9 @@ Lab-03/
     ├── kp_comparison.png
     ├── kp_comparison1.png
     ├── kp_comparison2.png
-    ├── kp_comparison3.png
-    └── t.txt
+    └── kp_comparison3.png
 ```
 
-The `graphs/` folder contains eight saved figures. `t.txt` is a blank text placeholder, not an experiment record.
 
 ## Programs
 
